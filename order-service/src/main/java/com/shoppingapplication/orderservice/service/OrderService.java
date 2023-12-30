@@ -8,6 +8,7 @@ import com.shoppingapplication.orderservice.model.OrderLineItems;
 import com.shoppingapplication.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -41,27 +42,21 @@ public class OrderService {
 
         //Call Inventory service
         //Place order if in stock
-        InventoryResponse[] inventoryResponsesArray = webClient.get()
-                .uri("http//localhost:8083/api/inventory",
+        List<InventoryResponse> inventoryResponsesArray = webClient.get()
+                .uri("http://localhost:8083/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                 .retrieve()
-                .bodyToMono(InventoryResponse[].class)
+                .bodyToMono(new ParameterizedTypeReference<List<InventoryResponse>>() {})
                 .block();
 
-
-
-        boolean allProductsInStock = Arrays.stream(inventoryResponsesArray)
+        boolean allProductsInStock = inventoryResponsesArray.stream()
                 .allMatch(InventoryResponse::isInStock);
-
-        System.out.println(allProductsInStock);
 
         if (allProductsInStock){
             orderRepository.save(order);
         } else {
             throw new IllegalArgumentException("Product is not in stock, Please try again later.");
         }
-
-
     }
 
     private OrderLineItems mapToDto(OrderLineItemsDto orderLineItemsDto) {
@@ -69,7 +64,6 @@ public class OrderService {
         orderLineItems.setPrice(orderLineItemsDto.getPrice());
         orderLineItems.setQuantity(orderLineItemsDto.getQuantity());
         orderLineItems.setSkuCode(orderLineItemsDto.getSkuCode());
-
         return orderLineItems;
     }
 }

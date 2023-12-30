@@ -29,7 +29,6 @@ public class InventoryService {
                             .isInStock(inventory.getQuantity()>0)
                             .build()
                 ).toList();
-        
     }
 
     @Transactional
