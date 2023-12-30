@@ -1,2 +1,16 @@
-package com.shoppingapplication.inventoryservice.dto;public class InventoryRequest {
+package com.shoppingapplication.inventoryservice.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
+public class InventoryRequest {
+    private String skuCode;
+    private Integer quantity;
 }

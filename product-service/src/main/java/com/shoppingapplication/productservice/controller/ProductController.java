@@ -26,4 +26,5 @@ public class ProductController {
     public List<ProductResponse> getProducts(){
         return productService.getAllProducts();
     }
+
 }

@@ -25,7 +25,7 @@ public class ProductService {
                 .build();
 
         productRepository.save(product);
-        log.info("Product {}, {}, {}is saved", product.getId(), product.getDescription(), product.getPrice());
+        log.info("Product {}, {}, {} is saved", product.getId(), product.getDescription(), product.getPrice());
     }
 
     public List getAllProducts() {
@@ -43,4 +43,5 @@ public class ProductService {
                 .price(product.getPrice())
                 .build();
     }
+
 }
