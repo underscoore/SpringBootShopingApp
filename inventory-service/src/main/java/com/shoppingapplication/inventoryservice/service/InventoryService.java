@@ -7,6 +7,7 @@ import com.shoppingapplication.inventoryservice.repository.InventoryRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,14 +23,17 @@ public class InventoryService {
 
     @Transactional(readOnly = true)
     public List<InventoryResponse> isInStock(List<String> skuCode) {
-        return inventoryRepository.findBySkuCodeIn(skuCode).stream()
+        List<InventoryResponse> isInStock = inventoryRepository.findBySkuCodeIn(skuCode).stream()
                 .map(inventory ->
-                    InventoryResponse.builder()
-                            .skuCode(inventory.getSkuCode())
-                            .isInStock(inventory.getQuantity()>0)
-                            .build()
+                        InventoryResponse.builder()
+                                .skuCode(inventory.getSkuCode())
+                                .isInStock(inventory.getQuantity() > 0)
+                                .build()
                 ).toList();
+        System.out.println(isInStock);
+        return isInStock;
     }
+
 
     @Transactional
     public void createInventory(InventoryRequest inventoryRequest) {
