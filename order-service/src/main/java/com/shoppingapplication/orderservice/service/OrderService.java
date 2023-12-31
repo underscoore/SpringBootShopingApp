@@ -51,6 +51,7 @@ public class OrderService {
         for (InventoryResponse inventoryResponse : inventoryResponsesArray) {
             String skuCode = inventoryResponse.getSkuCode();
             skuPresentInList.add(skuCode);
+
         }
 
         boolean allProductsInStock = inventoryResponsesArray.stream()
